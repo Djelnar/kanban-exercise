@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { users } from "./mockData";
 
 export type User = {
@@ -12,7 +13,7 @@ class UserAPI {
         () =>
           resolve({
             status: 200,
-            data: JSON.parse(JSON.stringify(users)),
+            data: cloneDeep(users),
           }),
         250
       );

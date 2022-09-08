@@ -12,6 +12,7 @@ type Props = {};
 export function TaskView(props: Props) {
   const navigate = useNavigate();
   const params = useParams();
+  const id = params.task!;
   const tasks = useRecoilValue(tasksMap);
   const [tasksArray, setTasksArray] = useRecoilState(_tasksArray);
 
@@ -23,7 +24,7 @@ export function TaskView(props: Props) {
     setModalIsOpen(false);
   };
 
-  const task = useMemo(() => tasks[params.task!], [params.task]);
+  const task = useMemo(() => tasks[id] ?? {}, [id]);
 
   const users = useRecoilValue(usersArray);
 
@@ -31,9 +32,13 @@ export function TaskView(props: Props) {
   const [description, setDescription] = useState(task.description ?? "");
   const [importance, setImportance] = useState(task.importance ?? 0);
   const [assigned, setAssigned] = useState(task.assigned ?? []);
+
+  const [error, setError] = useState("");
+
   const handleChangeAssigned: React.ChangeEventHandler<HTMLSelectElement> = (
     e
   ) => {
+    setError("");
     const values = Array.from(
       e.target.selectedOptions,
       (option) => option.value
@@ -45,6 +50,16 @@ export function TaskView(props: Props) {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
+
+      if (name.length === 0) {
+        setError("Name must not be empty");
+        return;
+      }
+      if (assigned.length === 0) {
+        setError("Task must be assigned to a person");
+        return;
+      }
+
       setLoading(true);
 
       const data = {
@@ -54,22 +69,46 @@ export function TaskView(props: Props) {
         importance,
         assigned,
       };
-      boardAPI
-        .editTask(data)
-        .then(() => {
-          setTasksArray(
-            tasksArray.map((tsk: any) =>
-              tsk.id === task.id
-                ? {
-                    ...tsk,
-                    ...data,
+
+      if (id === "new") {
+        boardAPI
+          .createTask(data)
+          .then((res) => {
+            setTasksArray(
+              tasksArray
+                .map((tsk, idx) => {
+                  if (idx === tasksArray.length - 1) {
+                    return {
+                      ...tsk,
+                      prevId: res.data.id,
+                    };
                   }
-                : tsk
-            )
-          );
-          closeModal();
-        })
-        .finally(() => setLoading(false));
+                  return tsk;
+                })
+                .concat(res.data)
+            );
+
+            closeModal();
+          })
+          .finally(() => setLoading(false));
+      } else {
+        boardAPI
+          .editTask(data)
+          .then(() => {
+            setTasksArray(
+              tasksArray.map((tsk) =>
+                tsk.id === task.id
+                  ? {
+                      ...tsk,
+                      ...data,
+                    }
+                  : tsk
+              )
+            );
+            closeModal();
+          })
+          .finally(() => setLoading(false));
+      }
     },
     [
       boardAPI,
@@ -135,6 +174,7 @@ export function TaskView(props: Props) {
         <button type="button" onClick={closeModal} disabled={loading}>
           Cancel
         </button>
+        <p className="error">{error}</p>
       </form>
     </Modal>
   );

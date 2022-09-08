@@ -1,5 +1,6 @@
 import * as mockData from "./mockData";
 import { v4 as uuidv4 } from "uuid";
+import { cloneDeep } from "lodash";
 
 export type BoardColumn = {
   id: string;
@@ -28,7 +29,7 @@ class BoardAPI {
         () =>
           resolve({
             status: 200,
-            data: JSON.parse(JSON.stringify(this.boardColumns)),
+            data: cloneDeep(this.boardColumns),
           }),
         250
       );
@@ -52,22 +53,27 @@ class BoardAPI {
         () =>
           resolve({
             status: 200,
-            data: JSON.parse(JSON.stringify(taskList)),
+            data: cloneDeep(taskList),
           }),
         250
       );
     });
 
-  createTask = (data: Omit<Task, "id" | "prevId" | "nextId">) =>
-    new Promise((resolve, reject) => {
-      if (!this.boardColumns.find((column) => column.id === data.columnId)) {
-        reject(new Error("Column not found"));
-      }
+  createTask = (data: Omit<Task, "id" | "prevId" | "nextId" | "columnId">) =>
+    new Promise<{ status: number; data: Task }>((resolve, reject) => {
       const id = uuidv4();
 
-      const newTask: Task = { id, ...data, prevId: this.lastId, nextId: null };
+      const newTask: Task = {
+        ...data,
+        id,
+        prevId: this.lastId,
+        nextId: null,
+        columnId: this.boardColumns[0].id,
+      };
 
-      this.tasks[this.lastId].nextId = id;
+      const lastTask = cloneDeep(this.tasks[this.lastId]);
+      lastTask.nextId = id;
+      this.tasks[this.lastId] = lastTask;
 
       this.lastId = id;
 

@@ -85,3 +85,18 @@
 .cardUser {
   font-style: italic;
 }
+
+.addNewTask {
+  border: 2px dashed blueviolet;
+  background-color: #0000ff11;
+  display: block;
+  width: calc(100% - 64px);
+  margin: 24px auto;
+  padding: 24px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.addNewTask:hover {
+  color: #0000ff;
+}

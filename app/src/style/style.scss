@@ -1,7 +1,20 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-variant-numeric: lining-nums;
+    -webkit-font-feature-settings: 'lnum';
+    font-feature-settings: 'lnum';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-.example-grid-col {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    background-color: rgba(86, 61, 124, .15);
-    border: 1px solid rgba(86, 61, 124, .2);
-}
+  html {
+    font-size: 100%;
+  }
+
+  #root {
+    position: relative;
+    min-height: 100vh;
+  }

@@ -1,66 +1,73 @@
-import {boardColumns} from './mockData';
-import { v4 as uuidv4 } from 'uuid';
+//@ts-check
+import * as mockData from "./mockData";
+import { v4 as uuidv4 } from "uuid";
 
 class BoardAPI {
+  boardColumns = mockData.boardColumns;
+  tasks = mockData.tasks;
 
   getBoardColumns = () =>
     new Promise((resolve, reject) => {
-      setTimeout(() => resolve({
-          status: 200,
-          data: JSON.parse(JSON.stringify(boardColumns))
-      }), 250);
+      setTimeout(
+        () =>
+          resolve({
+            status: 200,
+            data: JSON.parse(JSON.stringify(this.boardColumns)),
+          }),
+        250
+      );
     });
 
-  createTask = (columnId, data) =>
+  getTasks = () =>
     new Promise((resolve, reject) => {
-      if (!boardColumns.find(column => column.id === columnId)) {
-        reject(new Error('Column not found'));
+      setTimeout(
+        () =>
+          resolve({
+            status: 200,
+            data: JSON.parse(JSON.stringify(this.tasks)),
+          }),
+        250
+      );
+    });
+
+  createTask = (data) =>
+    new Promise((resolve, reject) => {
+      if (!this.boardColumns.find((column) => column.id === data.columnId)) {
+        reject(new Error("Column not found"));
       }
       const id = uuidv4();
       const newTask = { id, ...data };
 
-      boardColumns.find(column => column.id === columnId).tasks.push(newTask)
+      this.tasks.push(newTask);
 
-      setTimeout(() => resolve({
-          status: 201,
-          data: newTask
-      }), 250);
+      setTimeout(
+        () =>
+          resolve({
+            status: 201,
+            data: newTask,
+          }),
+        250
+      );
     });
 
   deleteTask = (id) =>
     new Promise((resolve, reject) => {
-      let idFound = false;
-      for(const column of boardColumns) {
-        column.tasks = column.tasks.filter((task) => {
-          if(task.id === id) {
-            idFound = true;
-            return false;
-          }
-          else return true;
-        })
-      }
-      if(idFound) return setTimeout(() => resolve({status: 204}), 250);
-      else return setTimeout(() => reject(new Error('Task not found'), 250));
+      this.tasks = this.tasks.filter((task) => task.id !== id);
+
+      setTimeout(() => resolve({ status: 204 }), 250);
     });
 
   editTask = (id, data) =>
     new Promise((resolve, reject) => {
-      let idFound = false;
-      for(const column of boardColumns) {
-        column.tasks = column.tasks.map((task) => {
-          if(task.id === id) {
-            idFound = true;
-            return {...data, id};
-          }
-          else return task;
-        })
+      const taskIndex = this.tasks.findIndex((t) => t.id === id);
+
+      if (taskIndex != null && taskIndex > -1) {
+        this.tasks[taskIndex] = { ...data, id };
+        return setTimeout(() => resolve({ status: 200 }), 250);
+      } else {
+        return setTimeout(() => reject(new Error("Task not found")), 250);
       }
-      if(idFound) return setTimeout(() => resolve({status: 200}), 250);
-      else return setTimeout(() => reject(new Error('Task not found'), 250));
     });
-
-
-
 }
 
 export default new BoardAPI();

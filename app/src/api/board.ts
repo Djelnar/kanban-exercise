@@ -1,4 +1,3 @@
-//@ts-check
 import * as mockData from "./mockData";
 import { v4 as uuidv4 } from "uuid";
 
@@ -39,7 +38,7 @@ class BoardAPI {
     new Promise<{ status: number; data: Task[] }>((resolve, reject) => {
       const firstTask = this.tasks[this.firstId];
 
-      const getNext = (task: Task) => {
+      const getNext = (task: Task): Task[] => {
         if (task.nextId) {
           return [task, ...getNext(this.tasks[task.nextId])];
         } else {

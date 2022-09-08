@@ -104,7 +104,7 @@ const tasksArray: Task[] = [
   },
 ];
 
-export const tasks: Record<string, Task> = tasksArray.reduce(
+export const tasks = tasksArray.reduce<Record<string, Task>>(
   (acc, curr) => ((acc[curr.id] = curr), acc),
   {}
 );

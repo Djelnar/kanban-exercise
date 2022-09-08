@@ -26,7 +26,8 @@ module.exports = {
       '.jsx',
       '.ts',
       '.tsx',
-    ]
+    ],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
   module: {
     rules:[

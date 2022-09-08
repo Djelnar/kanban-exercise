@@ -1,19 +1,26 @@
-import React, { useEffect } from "react";
-import { Routes, Route } from "react-router";
-import { boardAPI } from "./api/board";
-import Board from "./features/board";
-import View from "./features/board";
+import { Board } from "features/board";
+import { TaskView } from "features/task-view";
+import { usersStore } from "features/user/store";
+import { Navigate, Route, Routes } from "react-router";
+import { useRecoilValueLoadable } from "recoil";
+import { SplashScreen } from "ui/splash-screen";
 
-const App = () => {
-  useEffect(() => {
-    boardAPI.getTasks().then((res) => console.log(res));
-  }, []);
-  return (
-    <Routes>
-      <Route path="/board" element={<Board />} />
-      <Route path="/board/:task" element={<View />} />
-    </Routes>
-  );
+export const App = () => {
+  const { contents, state } = useRecoilValueLoadable(usersStore);
+
+  switch (state) {
+    case "hasValue":
+      return (
+        <Routes>
+          <Route path="/board" element={<Board />} />
+          <Route path="/board/:task" element={<TaskView />} />
+          <Route path="*" element={<Navigate to={"/board"} />} />
+        </Routes>
+      );
+    case "hasError":
+      return <SplashScreen>{contents.message}</SplashScreen>;
+    case "loading":
+    default:
+      return <SplashScreen>Loading</SplashScreen>;
+  }
 };
-
-export default App;

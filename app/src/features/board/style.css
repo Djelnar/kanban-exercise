@@ -28,13 +28,17 @@
   padding: 2px;
 }
 
+.columnInnerDraggingOver {
+  background-color: azure;
+  padding: 2px;
+}
+
 .card {
   margin-bottom: 4px;
   padding: 6px 8px;
   position: relative;
   user-select: none;
   transition: box-shadow 100ms ease-in;
-  cursor: move;
 }
 .card-0 {
   background: #00ff0030;
@@ -44,6 +48,9 @@
 }
 .card-2 {
   background: #ff000030;
+}
+.card-done {
+  background: #00ffff40;
 }
 
 .card:hover {
@@ -68,6 +75,9 @@
 }
 .card-2:after {
   background: red;
+}
+.card-done:after {
+  content: none;
 }
 
 .cardTitle {

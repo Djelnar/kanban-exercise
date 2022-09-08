@@ -7,5 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: kanban.exercise.com
     command: yarn start
+    volumes:
+      - ./app/src:/app/src/
     ports:
       - "9000:9000"

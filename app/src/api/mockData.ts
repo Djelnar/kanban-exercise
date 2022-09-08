@@ -1,3 +1,5 @@
+import { Task } from "./board";
+
 export const boardColumns = [
   {
     id: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
@@ -17,7 +19,7 @@ export const boardColumns = [
   },
 ];
 
-export const tasks = [
+const tasksArray: Task[] = [
   {
     id: "104d81c0-b63b-4387-b6d8-2c19333e85a7",
     name: "Design iteration",
@@ -26,6 +28,8 @@ export const tasks = [
     description:
       "Startup interaction design iteration burn rate. Partnership holy grail bandwidth buyer",
     columnId: "5545f2c8-4687-4b8d-954c-44f8340fcdc9",
+    prevId: null,
+    nextId: "6f0d080e-d1d9-480a-97b0-1728d4a4d235",
   },
   {
     id: "6f0d080e-d1d9-480a-97b0-1728d4a4d235",
@@ -37,6 +41,8 @@ export const tasks = [
     importance: 2,
     description: "Creative user experience equity virality series A financing",
     columnId: "d3aa370c-8f2a-443b-992f-d61cb8f468e1",
+    prevId: "104d81c0-b63b-4387-b6d8-2c19333e85a7",
+    nextId: "dc0aa9a6-a4d3-45e2-86e1-37e793a4df52",
   },
   {
     id: "dc0aa9a6-a4d3-45e2-86e1-37e793a4df52",
@@ -46,6 +52,8 @@ export const tasks = [
     description:
       "User experience interaction design infrastructure accelerator agile development direct mailing prototype.",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
+    prevId: "6f0d080e-d1d9-480a-97b0-1728d4a4d235",
+    nextId: "5571a521-5b00-48dc-9ede-c72d7fd45a20",
   },
   {
     id: "5571a521-5b00-48dc-9ede-c72d7fd45a20",
@@ -55,6 +63,8 @@ export const tasks = [
     description:
       "Investor early adopters bandwidth assets return on investment",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
+    prevId: "dc0aa9a6-a4d3-45e2-86e1-37e793a4df52",
+    nextId: "50066ea9-d560-4165-bc90-d4bf4d4ef0d3",
   },
   {
     id: "50066ea9-d560-4165-bc90-d4bf4d4ef0d3",
@@ -64,6 +74,8 @@ export const tasks = [
     description:
       "Product management seed round branding. Backing research & development network effects seed ",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
+    prevId: "5571a521-5b00-48dc-9ede-c72d7fd45a20",
+    nextId: "c01b24fa-cc0b-4db8-b734-9e1310cf1cbd",
   },
   {
     id: "c01b24fa-cc0b-4db8-b734-9e1310cf1cbd",
@@ -73,6 +85,8 @@ export const tasks = [
     description:
       "Twitter sales pitch validation venture holy grail series A financing business plan monetization",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
+    prevId: "50066ea9-d560-4165-bc90-d4bf4d4ef0d3",
+    nextId: "b49a55ba-c280-40ae-a217-8d64dbb53257",
   },
   {
     id: "b49a55ba-c280-40ae-a217-8d64dbb53257",
@@ -85,8 +99,15 @@ export const tasks = [
     description:
       "Partnership network effects. Leverage learning curve partner network responsive web",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
+    prevId: "c01b24fa-cc0b-4db8-b734-9e1310cf1cbd",
+    nextId: null,
   },
 ];
+
+export const tasks: Record<string, Task> = tasksArray.reduce(
+  (acc, curr) => ((acc[curr.id] = curr), acc),
+  {}
+);
 
 export const users = [
   {

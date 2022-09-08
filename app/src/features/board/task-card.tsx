@@ -12,11 +12,15 @@ export function TaskCard({ task }: Props) {
 
   return (
     <div className={`card card-${task.importance}`}>
-      <p className="cardTitle">{task.name}</p>
+      <a href={`/board/${task.id}`} className="cardTitle">
+        {task.name}
+      </a>
       <div className="cardUsers">
         <p className="cardUserTitle">Assigned to:</p>
         {task.assigned?.map((user) => (
-          <p className="cardUser">— {usersByKey[user].name}</p>
+          <p key={user} className="cardUser">
+            — {usersByKey[user].name}
+          </p>
         ))}
       </div>
     </div>

@@ -35,7 +35,7 @@
   position: relative;
   user-select: none;
   transition: box-shadow 100ms ease-in;
-  cursor: pointer;
+  cursor: move;
 }
 .card:hover {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -45,20 +45,12 @@
 .card:after {
   content: "";
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 20px;
-  height: 100%;
-}
-/* .card:after {
-  content: "";
-  position: absolute;
   right: 10px;
   top: calc(50% - 10px);
   border-radius: 10px;
   width: 20px;
   height: 20px;
-} */
+}
 
 .card-0:after {
   background: green;
@@ -72,7 +64,10 @@
 
 .cardTitle {
   font-size: 18px;
-  margin-bottom: 4px;
+}
+
+.cardUsers {
+  margin-top: 10px;
 }
 
 .cardUserTitle {

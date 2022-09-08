@@ -1,6 +1,7 @@
 import { Task } from "api/board";
 import { usersStore } from "features/user/store";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 type Props = {
@@ -12,9 +13,9 @@ export function TaskCard({ task }: Props) {
 
   return (
     <div className={`card card-${task.importance}`}>
-      <a href={`/board/${task.id}`} className="cardTitle">
+      <Link to={`/board/${task.id}`} className="cardTitle">
         {task.name}
-      </a>
+      </Link>
       <div className="cardUsers">
         <p className="cardUserTitle">Assigned to:</p>
         {task.assigned?.map((user) => (

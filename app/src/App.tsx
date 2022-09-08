@@ -8,8 +8,15 @@ export const App = () => {
   return (
     <Routes>
       <Route path="/board" element={<Board />} />
-      <Route path="/board/:task" element={<Board />} />
-      <Route path="/board/:task" element={<TaskView />} />
+      <Route
+        path="/board/:task"
+        element={
+          <>
+            <TaskView />
+            <Board />
+          </>
+        }
+      />
       <Route path="*" element={<Navigate to={"/board"} />} />
     </Routes>
   );

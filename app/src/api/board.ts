@@ -101,7 +101,9 @@ class BoardAPI {
       setTimeout(() => resolve({ status: 204 }), 250);
     });
 
-  editTask = (data: Omit<Task, "prevId" | "nextId">) =>
+  editTask = (
+    data: Partial<Omit<Task, "prevId" | "nextId">> & Pick<Task, "id">
+  ) =>
     new Promise((resolve, reject) => {
       const task = this.tasks[data.id];
 

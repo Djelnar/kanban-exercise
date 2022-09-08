@@ -1,4 +1,5 @@
 import React from "react";
+import Modal from "react-modal";
 import { RecoilRoot } from "recoil";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -9,6 +10,8 @@ import { SplashScreen } from "ui/splash-screen";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
+
+Modal.setAppElement(container!);
 
 root.render(
   <RecoilRoot>

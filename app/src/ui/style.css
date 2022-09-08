@@ -1,0 +1,9 @@
+.splashScreen {
+  width: 100vw;
+  height: 100vh;
+  background-color: beige;
+  font-size: 48px;
+
+  display: grid;
+  place-items: center;
+}

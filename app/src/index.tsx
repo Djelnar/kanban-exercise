@@ -5,14 +5,17 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import { App } from "App";
 import "style/style.scss";
+import { SplashScreen } from "ui/splash-screen";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 
 root.render(
   <RecoilRoot>
-    <Router>
-      <App />
-    </Router>
+    <React.Suspense fallback={<SplashScreen>Loading</SplashScreen>}>
+      <Router>
+        <App />
+      </Router>
+    </React.Suspense>
   </RecoilRoot>
 );

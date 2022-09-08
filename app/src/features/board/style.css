@@ -1,0 +1,84 @@
+.board {
+  width: 100vw;
+  height: 100vh;
+  background-color: antiquewhite;
+  display: grid;
+  grid-template-columns: repeat(10, 300px);
+  padding: 16px;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.column {
+  background-color: #ddd;
+  height: 100%;
+  padding: 4px;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+}
+
+.columnHeader {
+  font-size: 16px;
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+
+.columnInner {
+  background-color: aliceblue;
+  padding: 3px;
+}
+
+.card {
+  background-color: #fff;
+  margin-bottom: 4px;
+  padding: 4px;
+  position: relative;
+  user-select: none;
+  transition: box-shadow 100ms ease-in;
+  cursor: pointer;
+}
+.card:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: box-shadow 100ms ease-out;
+}
+
+.card:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  height: 100%;
+}
+/* .card:after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 10px);
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+} */
+
+.card-0:after {
+  background: green;
+}
+.card-1:after {
+  background: orange;
+}
+.card-2:after {
+  background: red;
+}
+
+.cardTitle {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.cardUserTitle {
+  font-weight: 700;
+}
+
+.cardUser {
+  font-style: italic;
+}

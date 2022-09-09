@@ -40,7 +40,7 @@ export const tasks: Task[] = [
     importance: 2,
     description: "Creative user experience equity virality series A financing",
     columnId: "d3aa370c-8f2a-443b-992f-d61cb8f468e1",
-    sortOrder: 0,
+    sortOrder: 1,
   },
   {
     id: "dc0aa9a6-a4d3-45e2-86e1-37e793a4df52",
@@ -50,7 +50,7 @@ export const tasks: Task[] = [
     description:
       "User experience interaction design infrastructure accelerator agile development direct mailing prototype.",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
-    sortOrder: 0,
+    sortOrder: 2,
   },
   {
     id: "5571a521-5b00-48dc-9ede-c72d7fd45a20",
@@ -60,7 +60,7 @@ export const tasks: Task[] = [
     description:
       "Investor early adopters bandwidth assets return on investment",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
-    sortOrder: 0,
+    sortOrder: 3,
   },
   {
     id: "50066ea9-d560-4165-bc90-d4bf4d4ef0d3",
@@ -70,7 +70,7 @@ export const tasks: Task[] = [
     description:
       "Product management seed round branding. Backing research & development network effects seed ",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
-    sortOrder: 0,
+    sortOrder: 4,
   },
   {
     id: "c01b24fa-cc0b-4db8-b734-9e1310cf1cbd",
@@ -80,7 +80,7 @@ export const tasks: Task[] = [
     description:
       "Twitter sales pitch validation venture holy grail series A financing business plan monetization",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
-    sortOrder: 0,
+    sortOrder: 5,
   },
   {
     id: "b49a55ba-c280-40ae-a217-8d64dbb53257",
@@ -93,7 +93,7 @@ export const tasks: Task[] = [
     description:
       "Partnership network effects. Leverage learning curve partner network responsive web",
     columnId: "e38bba16-6c80-4ac3-9102-5dbb6aeb7c19",
-    sortOrder: 0,
+    sortOrder: 6,
   },
 ];
 

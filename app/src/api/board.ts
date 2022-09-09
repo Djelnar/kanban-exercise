@@ -46,7 +46,7 @@ class BoardAPI {
       );
     });
 
-  createTask = (data: Omit<Task, "id" | "columnId">) =>
+  createTask = (data: Omit<Task, "id" | "columnId" | "sortOrder">) =>
     new Promise<{ status: number; data: Task }>((resolve, reject) => {
       const id = uuidv4();
 
@@ -74,7 +74,7 @@ class BoardAPI {
       setTimeout(() => resolve({ status: 204 }), 250);
     });
 
-  editTask = (data: Task) =>
+  editTask = (data: Omit<Task, "sortOrder" | "columnId">) =>
     new Promise((resolve, reject) => {
       const taskIndex = this.tasks.findIndex((tsk) => tsk.id === data.id);
 

@@ -1,7 +1,7 @@
 import { tasks } from "api/mockData";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   DragDropContext,
   DropResult,
@@ -9,9 +9,11 @@ import {
   Draggable,
   Droppable,
 } from "react-beautiful-dnd";
-import { columnsStore, tasksStore } from "./store";
+import { columnsStore, tasksStore, tasksArray } from "./store";
 import "./style.css";
 import { TaskCard } from "./task-card";
+import { clone, cloneDeep, keyBy } from "lodash";
+import { Task } from "api/board";
 
 export function Board() {
   const columns = useRecoilValue(columnsStore);
@@ -22,13 +24,18 @@ export function Board() {
     navigate("/board/new");
   };
 
-  const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    console.log(result);
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 23 ~ onDragEnd ~ provided",
-      provided
-    );
-  };
+  const onDragEnd = useCallback(
+    (result: DropResult, provided: ResponderProvided) => {
+      const taskId = result.draggableId;
+
+      const sourceColumnId = result.source?.droppableId;
+      const destinationColumnId = result.destination?.droppableId;
+
+      const sourceIndex = result.source.index;
+      const destIndex = result.destination?.index;
+    },
+    []
+  );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -47,11 +54,11 @@ export function Board() {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  {tasksGroups[column.id]?.map((task, taskIndex) => (
+                  {tasksGroups[column.id]?.map((task) => (
                     <TaskCard
                       task={task}
                       key={task.id}
-                      index={taskIndex}
+                      index={task.sortOrder}
                       done={idx === columns.length - 1}
                     />
                   ))}

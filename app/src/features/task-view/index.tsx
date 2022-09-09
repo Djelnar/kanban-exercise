@@ -1,5 +1,5 @@
 import { boardAPI } from "api/board";
-import { tasksArray as _tasksArray, tasksMap } from "features/board/store";
+import { tasksArrayStore, tasksMap } from "features/board/store";
 import { usersArray } from "features/user/store";
 import React, { useCallback, useMemo, useState } from "react";
 import Modal from "react-modal";
@@ -14,7 +14,7 @@ export function TaskView(props: Props) {
   const params = useParams();
   const id = params.task!;
   const tasks = useRecoilValue(tasksMap);
-  const [tasksArray, setTasksArray] = useRecoilState(_tasksArray);
+  const [tasksArray, setTasksArray] = useRecoilState(tasksArrayStore);
 
   const [loading, setLoading] = useState(false);
 
@@ -74,19 +74,7 @@ export function TaskView(props: Props) {
         boardAPI
           .createTask(data)
           .then((res) => {
-            setTasksArray(
-              tasksArray
-                .map((tsk, idx) => {
-                  if (idx === tasksArray.length - 1) {
-                    return {
-                      ...tsk,
-                      prevId: res.data.id,
-                    };
-                  }
-                  return tsk;
-                })
-                .concat(res.data)
-            );
+            setTasksArray(tasksArray.concat(res.data));
 
             closeModal();
           })
@@ -122,6 +110,8 @@ export function TaskView(props: Props) {
     ]
   );
 
+  const metaKey = navigator.userAgent.includes("Mac OS X") ? "⌘" : "Ctrl";
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -129,12 +119,15 @@ export function TaskView(props: Props) {
       style={{
         content: {
           width: "50vw",
-          height: "50vh",
+          height: "60vh",
           margin: "auto",
         },
       }}
     >
       <form onSubmit={handleSubmit} className="taskForm">
+        <h1>
+          {id === "new" ? "Create" : "Edit"} task {id !== "new" && task.id}
+        </h1>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -171,7 +164,7 @@ export function TaskView(props: Props) {
             </option>
           ))}
         </select>
-        <p>Use CMD or CTRL to multi-select ysers</p>
+        <p>Use {metaKey} key to multi-select users</p>
         <div className="taskButtons">
           <button className="taskButton" type="submit" disabled={loading}>
             Save

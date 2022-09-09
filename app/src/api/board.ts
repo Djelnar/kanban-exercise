@@ -16,11 +16,17 @@ export type Task = {
   sortOrder: number;
 };
 
+const tasksLoaded = JSON.parse(localStorage.getItem("tasks") ?? "null") as
+  | Task[]
+  | null;
+
 class BoardAPI {
   private boardColumns: BoardColumn[] = mockData.boardColumns;
-  private tasks: Task[] = mockData.tasks;
-  private firstId = "104d81c0-b63b-4387-b6d8-2c19333e85a7";
-  private lastId = "b49a55ba-c280-40ae-a217-8d64dbb53257";
+  private tasks: Task[] = tasksLoaded ?? mockData.tasks;
+
+  private saveState = () => {
+    localStorage.setItem("tasks", JSON.stringify(this.tasks));
+  };
 
   getBoardColumns = () =>
     new Promise<{ status: number; data: BoardColumn[] }>((resolve, reject) => {
@@ -57,6 +63,7 @@ class BoardAPI {
         columnId: this.boardColumns[0].id,
       };
 
+      this.saveState();
       setTimeout(
         () =>
           resolve({
@@ -71,6 +78,7 @@ class BoardAPI {
     new Promise((resolve, reject) => {
       this.tasks = this.tasks.filter((tsk) => tsk.id !== id);
 
+      this.saveState();
       setTimeout(() => resolve({ status: 204 }), 250);
     });
 
@@ -84,10 +92,31 @@ class BoardAPI {
           ...data,
         };
 
+        this.saveState();
         return setTimeout(() => resolve({ status: 200 }), 250);
       } else {
         return setTimeout(() => reject(new Error("Task not found")), 250);
       }
+    });
+
+  bulkReorderTasks = (
+    data: Record<string, Pick<Task, "id" | "sortOrder" | "columnId">>
+  ) =>
+    new Promise((resolve, reject) => {
+      this.tasks = this.tasks.map((item) => {
+        const changes = data[item.id];
+
+        if (changes) {
+          return {
+            ...item,
+            ...changes,
+          };
+        }
+        return item;
+      });
+
+      this.saveState();
+      return setTimeout(() => resolve({ status: 200 }), 250);
     });
 }
 

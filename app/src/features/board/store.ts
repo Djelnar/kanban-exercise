@@ -1,53 +1,33 @@
 import { boardAPI, Task } from "api/board";
-import { keyBy, orderBy } from "lodash";
+import { groupBy, keyBy, orderBy } from "lodash";
 import { atom, selector } from "recoil";
 
-const getTasks = async () => {
-  const tasks = await boardAPI.getTasks().then((res) => res.data);
-
-  return orderBy(tasks, "sortOrder", "asc");
-};
+const getTasks = () => boardAPI.getTasks().then((res) => res.data);
 
 export const columnsStore = selector({
   key: "columnsStore",
   get: () => boardAPI.getBoardColumns().then((res) => res.data),
 });
 
-export const tasksArray = atom({
-  key: "tasksArray",
+export const tasksArrayStore = atom({
+  key: "tasksArrayStore",
   default: getTasks(),
 });
 
 export const tasksMap = selector({
   key: "tasksMap",
   get: ({ get }) => {
-    const tasks = get(tasksArray);
+    const tasks = get(tasksArrayStore);
 
-    const tasksByKey = tasks.reduce<Record<string, Task>>(
-      (acc, curr) => ((acc[curr.id] = curr), acc),
-      {}
-    );
-
-    return tasksByKey;
+    return keyBy(tasks, "id");
   },
 });
 
-export const tasksStore = selector({
-  key: "tasksStore",
+export const tasksGroupsStore = selector({
+  key: "tasksGroupsStore",
   get: ({ get }) => {
-    const tasks = get(tasksArray);
-    const columns = get(columnsStore);
-    const columnsObject = columns.reduce<Record<string, Task[]>>(
-      (acc, curr) => ((acc[curr.id] = []), acc),
-      {}
-    );
+    const tasks = get(tasksArrayStore);
 
-    const tasksByGroup = tasks.reduce<Record<string, Task[]>>((acc, curr) => {
-      acc[curr.columnId] = (acc[curr.columnId] || []).concat(curr);
-
-      return acc;
-    }, columnsObject);
-
-    return tasksByGroup;
+    return groupBy(tasks, "columnId");
   },
 });

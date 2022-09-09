@@ -63,6 +63,7 @@ class BoardAPI {
         columnId: this.boardColumns[0].id,
       };
 
+      this.tasks.push(newTask);
       this.saveState();
       setTimeout(
         () =>

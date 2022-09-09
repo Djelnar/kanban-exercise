@@ -1,3 +1,43 @@
 .taskModal {
   width: 50vw;
 }
+
+.taskForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.taskInput {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.taskTextArea {
+  resize: none;
+  height: 56px;
+  font-size: 16px;
+}
+
+.taskUsersSelect {
+  height: 100px;
+}
+
+.taskButton {
+  display: block;
+  border: none;
+  background-color: palegreen;
+  padding: 16px;
+  font-size: 24px;
+}
+
+.taskButtons {
+  display: flex;
+  gap: 16px;
+}
+
+.taskError {
+  color: red;
+  font-size: 18px;
+}

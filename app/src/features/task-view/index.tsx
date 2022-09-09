@@ -6,7 +6,7 @@ import Modal from "react-modal";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SplashScreen } from "ui/splash-screen";
-
+import "./style.css";
 type Props = {};
 
 export function TaskView(props: Props) {
@@ -134,16 +134,18 @@ export function TaskView(props: Props) {
         },
       }}
     >
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="taskForm">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           disabled={loading}
+          className="taskInput"
         />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           disabled={loading}
+          className="taskTextArea"
         />
         <select
           name="importance"
@@ -161,6 +163,7 @@ export function TaskView(props: Props) {
           onChange={handleChangeAssigned}
           multiple
           disabled={loading}
+          className="taskUsersSelect"
         >
           {users.map((user) => (
             <option value={user.id} key={user.id}>
@@ -168,13 +171,21 @@ export function TaskView(props: Props) {
             </option>
           ))}
         </select>
-        <button type="submit" disabled={loading}>
-          Save
-        </button>
-        <button type="button" onClick={closeModal} disabled={loading}>
-          Cancel
-        </button>
-        <p className="error">{error}</p>
+        <p>Use CMD or CTRL to multi-select ysers</p>
+        <div className="taskButtons">
+          <button className="taskButton" type="submit" disabled={loading}>
+            Save
+          </button>
+          <button
+            className="taskButton"
+            type="button"
+            onClick={closeModal}
+            disabled={loading}
+          >
+            Cancel
+          </button>
+        </div>
+        <p className="taskError">{error}</p>
       </form>
     </Modal>
   );

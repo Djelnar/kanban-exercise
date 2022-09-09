@@ -13,13 +13,12 @@ export type Task = {
   importance: number;
   description: string;
   columnId: string;
-  prevId: string | null;
-  nextId: string | null;
+  sortOrder: number;
 };
 
 class BoardAPI {
   private boardColumns: BoardColumn[] = mockData.boardColumns;
-  private tasks: Record<string, Task> = mockData.tasks;
+  private tasks: Task[] = mockData.tasks;
   private firstId = "104d81c0-b63b-4387-b6d8-2c19333e85a7";
   private lastId = "b49a55ba-c280-40ae-a217-8d64dbb53257";
 
@@ -37,47 +36,26 @@ class BoardAPI {
 
   getTasks = () =>
     new Promise<{ status: number; data: Task[] }>((resolve, reject) => {
-      const firstTask = this.tasks[this.firstId];
-
-      const getNext = (task: Task): Task[] => {
-        if (task.nextId) {
-          return [task, ...getNext(this.tasks[task.nextId])];
-        } else {
-          return [task];
-        }
-      };
-
-      const taskList = getNext(firstTask);
-
       setTimeout(
         () =>
           resolve({
             status: 200,
-            data: cloneDeep(taskList),
+            data: cloneDeep(this.tasks),
           }),
         250
       );
     });
 
-  createTask = (data: Omit<Task, "id" | "prevId" | "nextId" | "columnId">) =>
+  createTask = (data: Omit<Task, "id" | "columnId">) =>
     new Promise<{ status: number; data: Task }>((resolve, reject) => {
       const id = uuidv4();
 
       const newTask: Task = {
         ...data,
         id,
-        prevId: this.lastId,
-        nextId: null,
+        sortOrder: this.tasks.length,
         columnId: this.boardColumns[0].id,
       };
-
-      const lastTask = cloneDeep(this.tasks[this.lastId]);
-      lastTask.nextId = id;
-      this.tasks[this.lastId] = lastTask;
-
-      this.lastId = id;
-
-      this.tasks[id] = newTask;
 
       setTimeout(
         () =>
@@ -91,34 +69,19 @@ class BoardAPI {
 
   deleteTask = (id: string) =>
     new Promise((resolve, reject) => {
-      const task = this.tasks[id];
-
-      if (task) {
-        const { prevId, nextId } = task;
-        if (prevId) {
-          this.tasks[prevId].nextId = nextId;
-        }
-        if (nextId) {
-          this.tasks[nextId].prevId = prevId;
-        }
-        delete this.tasks[id];
-      }
+      this.tasks = this.tasks.filter((tsk) => tsk.id !== id);
 
       setTimeout(() => resolve({ status: 204 }), 250);
     });
 
-  editTask = (
-    data: Partial<Omit<Task, "prevId" | "nextId">> & Pick<Task, "id">
-  ) =>
+  editTask = (data: Task) =>
     new Promise((resolve, reject) => {
-      const task = this.tasks[data.id];
+      const taskIndex = this.tasks.findIndex((tsk) => tsk.id === data.id);
 
-      if (task) {
-        this.tasks[data.id] = {
-          ...task,
+      if (taskIndex > -1) {
+        this.tasks[taskIndex] = {
+          ...this.tasks[taskIndex],
           ...data,
-          prevId: task.prevId,
-          nextId: task.nextId,
         };
 
         return setTimeout(() => resolve({ status: 200 }), 250);

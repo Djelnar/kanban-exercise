@@ -56,7 +56,7 @@ export function TaskView(props: Props) {
         return;
       }
       if (assigned.length === 0) {
-        setError("Task must be assigned to a person");
+        setError("Task must be assigned to at least one person");
         return;
       }
 
@@ -132,38 +132,47 @@ export function TaskView(props: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           disabled={loading}
+          placeholder="Name"
           className="taskInput"
         />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           disabled={loading}
+          placeholder="Description"
           className="taskTextArea"
         />
-        <select
-          name="importance"
-          value={importance}
-          onChange={(e) => setImportance(+e.target.value)}
-          disabled={loading}
-        >
-          <option value={0}>Low</option>
-          <option value={1}>Medium</option>
-          <option value={2}>High</option>
-        </select>
-        <select
-          name="assigned"
-          value={assigned}
-          onChange={handleChangeAssigned}
-          multiple
-          disabled={loading}
-          className="taskUsersSelect"
-        >
-          {users.map((user) => (
-            <option value={user.id} key={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
+        <label title="Importance" className="label">
+          <p>Importance</p>
+          <select
+            name="importance"
+            value={importance}
+            onChange={(e) => setImportance(+e.target.value)}
+            disabled={loading}
+            className="importanceSelect"
+          >
+            <option value={0}>Low</option>
+            <option value={1}>Medium</option>
+            <option value={2}>High</option>
+          </select>
+        </label>
+        <label title="Importance" className="label">
+          <p>Assignees</p>
+          <select
+            name="assigned"
+            value={assigned}
+            onChange={handleChangeAssigned}
+            multiple
+            disabled={loading}
+            className="taskUsersSelect"
+          >
+            {users.map((user) => (
+              <option value={user.id} key={user.id}>
+                {user.name}
+              </option>
+            ))}
+          </select>
+        </label>
         <p>Use {metaKey} key to multi-select users</p>
         <div className="taskButtons">
           <button className="taskButton" type="submit" disabled={loading}>
